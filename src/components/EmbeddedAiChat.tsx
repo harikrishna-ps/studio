@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { hotelRecommendationChat } from '@/ai/flows/hotel-recommendation-chat';
 import { useToast } from '@/hooks/use-toast';
+import { hotels } from '@/lib/mock-data';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -39,7 +40,10 @@ export default function EmbeddedAiChat({className}: {className?: string}) {
     setIsLoading(true);
 
     try {
-      const result = await hotelRecommendationChat({ userInput: input });
+      const result = await hotelRecommendationChat({
+        userInput: input,
+        hotelList: JSON.stringify(hotels),
+      });
       const assistantMessage: Message = { role: 'assistant', content: result.hotelRecommendations };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {

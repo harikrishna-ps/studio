@@ -7,6 +7,7 @@ import {z} from 'genkit';
 
 const HotelRecommendationChatInputSchema = z.object({
   userInput: z.string().describe('The user input query for hotel recommendations.'),
+  hotelList: z.string().describe('A JSON string of available hotels to choose from.'),
 });
 export type HotelRecommendationChatInput = z.infer<typeof HotelRecommendationChatInputSchema>;
 
@@ -27,9 +28,11 @@ const prompt = ai.definePrompt({
   output: {schema: HotelRecommendationChatOutputSchema},
   prompt: `You are a hotel recommendation chatbot. A user is asking for hotel recommendations.
 
-  Based on the user's preferences, provide a list of hotels that match their criteria.
+  Based on the user's preferences, provide a list of recommended hotels that match their criteria from the provided hotel list. Provide your response as a natural language summary of the hotels.
 
   User input: {{{userInput}}}
+  Hotel List (JSON): {{{hotelList}}}
+
   Hotels: `,
 });
 
