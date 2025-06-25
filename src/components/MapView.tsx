@@ -27,9 +27,8 @@ export default function MapView({ hotels }: MapViewProps) {
        <Image
           src="https://placehold.co/1200x800.png"
           alt="Map of a city"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-50"
+          fill
+          className="object-cover opacity-50"
           data-ai-hint="city map"
        />
        <p className="absolute top-4 left-4 bg-background/80 p-2 rounded-md text-sm text-muted-foreground">Map view is for demonstration purposes.</p>
