@@ -35,16 +35,22 @@ export default function EmbeddedAiChat({className}: {className?: string}) {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setIsLoading(true);
 
     try {
+      const historyForGenkit = newMessages.map(msg => ({
+          role: msg.role === 'assistant' ? ('model' as const) : ('user' as const),
+          parts: [{ text: msg.content }],
+      }));
+
       const result = await hotelRecommendationChat({
-        userInput: input,
+        history: historyForGenkit,
         hotelList: JSON.stringify(hotels),
       });
-      const assistantMessage: Message = { role: 'assistant', content: result.hotelRecommendations };
+      const assistantMessage: Message = { role: 'assistant', content: result.answer };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('AI chat error:', error);
